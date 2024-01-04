@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 
 public class Wall implements Structure {
@@ -25,9 +26,12 @@ public class Wall implements Structure {
     }
 
     public Optional<Block> findBlockByColor(String color) {
-        Optional<Block> result;
-        result = blocks.stream().filter(block -> block.getColor().equals(color)).findFirst();
-        return result;
+        return blocks.stream()
+                .flatMap(block -> block instanceof CompositeBlock
+                        ? Stream.concat(Stream.of(block), ((CompositeBlock) block).getBlocks().stream())
+                        : Stream.of(block))
+                .filter(block -> block.getColor().equals(color))
+                .findAny();
     }
 
     public List<Block> findBlocksByMaterial(String material) {
