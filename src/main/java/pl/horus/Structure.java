@@ -13,11 +13,8 @@ interface Structure {
     //zwraca liczbę wszystkich elementów tworzących strukturę
     int count();
 
-    void addBlock();
-
-    void addCompositeBlock();
+    void addBlock(Block... block);
 
     void removeBlock();
 
-    void addBlocks();
 }
